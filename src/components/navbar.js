@@ -4,23 +4,6 @@ import 'bootswatch/dist/flatly/bootstrap.css';
 import NavbarItem from './navbarItem';
 
 
- /* 
-          <ul className='navbar-nav'>
-            <NavbarItem
-              render='true'
-              href='/listagem-Consultas'
-              label='Consultas'
-            />
-          </ul>
-          <ul className='navbar-nav'>
-            <NavbarItem
-              render='true'
-              href='/listagem-procedimento'
-              label='Procedimentos'
-            />
-          </ul>
-*/
-
 function Navbar(props) {
   return (
     <div className='navbar navbar-expand-lg fixed-top navbar-dark bg-primary'>
@@ -71,7 +54,20 @@ function Navbar(props) {
               label='Raças'
             />
           </ul>
-
+          <ul className='navbar-nav'>
+            <NavbarItem
+              render='true'
+              href='/listagem-Consultas'
+              label='Consultas'
+            />
+          </ul>
+          <ul className='navbar-nav'>
+            <NavbarItem
+              render='true'
+              href='/listagem-procedimento'
+              label='Procedimentos'
+            />
+          </ul>
 
 
 

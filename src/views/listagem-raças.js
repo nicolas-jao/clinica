@@ -84,7 +84,7 @@ function ListagemRaças() {
                   {dados.map((dado) => (
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
-                      <td>{dado.idEspecie}</td>
+                      <td>{dado.nomeEspecie}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton

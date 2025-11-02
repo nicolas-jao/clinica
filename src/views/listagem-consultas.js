@@ -16,17 +16,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL}/tutores`;
+const baseURL = `${BASE_URL}/consultas`;
 
-function ListagemTutores() {
+function ListagemConsultas() {
   const navigate = useNavigate();
 
   const cadastrar = () => {
-    navigate(`/cadastro-tutores`);
+    navigate(`/cadastro-consultas`);
   };
 
   const editar = (id) => {
-    navigate(`/cadastro-tutores/${id}`);
+    navigate(`/cadastro-consultas/${id}`);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -40,7 +40,7 @@ function ListagemTutores() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(function (response) {
-        mensagemSucesso(`Tutor excluído com sucesso!`);
+        mensagemSucesso(`Consulta excluída com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -48,7 +48,7 @@ function ListagemTutores() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o tutor`);
+        mensagemErro(`Erro ao excluir o consulta`);
       });
   }
 
@@ -62,7 +62,7 @@ function ListagemTutores() {
 
   return (
     <div className='container'>
-      <Card title='Listagem de Tutores'>
+      <Card title='Listagem de Consultas'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
@@ -71,30 +71,26 @@ function ListagemTutores() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Novo Tutor
+                Nova Consulta
               </button>
               <table className='table table-hover'>
                 <thead>
                   <tr>
-                    <th scope='col'>Nome</th>
-                    <th scope='col'>CPF</th>
-                    <th scope='col'>Telefone</th>
-                    <th scope='col'>Email</th>
-                    <th scope='col'>CEP</th>
-                    <th scope='col'>Número</th>
-                    <th scope='col'>Complemento</th>
+                    <th scope='col'>Data</th>
+                    <th scope='col'>Status</th>
+                    <th scope='col'>Veterinário</th>
+                    <th scope='col'>Animal</th>
+                    <th scope='col'>Observações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dados.map((dado) => (
                     <tr key={dado.id}>
-                      <td>{dado.nome}</td>
-                      <td>{dado.cpf}</td>
-                      <td>{dado.telefone}</td>
-                      <td>{dado.email}</td>
-                      <td>{dado.cep}</td>
-                      <td>{dado.numero}</td>
-                      <td>{dado.complemento}</td>
+                      <td>{dado.data}</td>
+                      <td>{dado.status}</td>
+                      <td>{dado.nomeVet}</td>
+                      <td>{dado.nomeAnimal}</td>
+                      <td>{dado.orientacoes}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
@@ -123,4 +119,4 @@ function ListagemTutores() {
   );
 }
 
-export default ListagemTutores;
+export default ListagemConsultas;

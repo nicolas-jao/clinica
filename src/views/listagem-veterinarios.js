@@ -82,12 +82,8 @@ function ListagemVeterinarios() {
                     <th scope='col'>Telefone</th>
                     <th scope='col'>Email</th>
                     <th scope='col'>CEP</th>
-                    <th scope='col'>Logradouro</th>
                     <th scope='col'>Número</th>
                     <th scope='col'>Complemento</th>
-                    <th scope='col'>Bairro</th>
-                    <th scope='col'>Cidade</th>
-                    <th scope='col'>UF</th>         
                   </tr>
                 </thead>
                 <tbody>
@@ -99,12 +95,8 @@ function ListagemVeterinarios() {
                       <td>{dado.telefone}</td>
                       <td>{dado.email}</td>
                       <td>{dado.cep}</td>
-                      <td>{dado.logradouro}</td>
                       <td>{dado.numero}</td>
                       <td>{dado.complemento}</td>
-                      <td>{dado.bairro}</td>
-                      <td>{dado.cidade}</td>
-                      <td>{dado.UF}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
