@@ -17,6 +17,12 @@ import CadastroEspecies from './views/cadastro-especies';
 import ListagemRaças from './views/listagem-raças';
 import CadastroRaças from './views/cadastro-raças';
 
+import ListagemConsultas from './views/listagem-consultas';
+import CadastroConsultas from './views/cadastro-consultas';
+
+import ListagemProcedimentos from './views/listagem-procedimentos';
+import CadastroProcedimentos from './views/cadastro-procedimentos';
+
 
 
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
@@ -41,6 +47,13 @@ function Rotas(props) {
 
         <Route path='/cadastro-raças/:idParam?' element={<CadastroRaças />} />
         <Route path='/listagem-raças' element={<ListagemRaças />} />
+
+        <Route path='/cadastro-consultas/:idParam?' element={<CadastroConsultas />} />
+        <Route path='/listagem-consultas' element={<ListagemConsultas />} />
+
+        <Route path='/cadastro-procedimentos/:idParam?' element={<CadastroProcedimentos />} />
+        <Route path='/listagem-procedimentos' element={<ListagemProcedimentos />} />
+
       </Routes>
     </BrowserRouter>
   );

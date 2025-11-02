@@ -71,7 +71,7 @@ function ListagemProcedimentos() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Novo Procedimentos
+                Novo Procedimento
               </button>
               <table className='table table-hover'>
                 <thead>
@@ -113,4 +113,4 @@ function ListagemProcedimentos() {
   );
 }
 
-export default ListagemAnimais;
+export default ListagemProcedimentos;
