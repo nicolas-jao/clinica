@@ -16,17 +16,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL}/animais`;
+const baseURL = `${BASE_URL}/especies`;
 
-function ListagemAnimais() {
+function ListagemEspecies() {
   const navigate = useNavigate();
 
   const cadastrar = () => {
-    navigate(`/cadastro-animais`);
+    navigate(`/cadastro-especies`);
   };
 
   const editar = (id) => {
-    navigate(`/cadastro-animais/${id}`);
+    navigate(`/cadastro-especies/${id}`);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -40,7 +40,7 @@ function ListagemAnimais() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(function (response) {
-        mensagemSucesso(`Animal excluído com sucesso!`);
+        mensagemSucesso(`Espécie excluído com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -48,7 +48,7 @@ function ListagemAnimais() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o animal`);
+        mensagemErro(`Erro ao excluir o espécie`);
       });
   }
 
@@ -62,7 +62,7 @@ function ListagemAnimais() {
 
   return (
     <div className='container'>
-      <Card title='Listagem de Animais'>
+      <Card title='Listagem de Espécies'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
@@ -71,32 +71,18 @@ function ListagemAnimais() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Novo Animal
+                Nova Espécie
               </button>
               <table className='table table-hover'>
                 <thead>
                   <tr>
                     <th scope='col'>Nome</th>
-                    <th scope='col'>Data de Nascimento</th>
-                    <th scope='col'>Sexo</th>
-                    <th scope='col'>Castrado</th>
-                    <th scope='col'>Observações</th>
-                    <th scope='col'>Foto</th>
-                    <th scope='col'>Tutor</th>
-                    <th scope='col'>Raça</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dados.map((dado) => (
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
-                      <td>{dado.dataNascimento}</td>
-                      <td>{dado.sexo}</td>
-                      <td>{dado.castrado}</td>
-                      <td>{dado.observações}</td>
-                      <td>{dado.foto}</td>
-                      <td>{dado.nomeTutor}</td>
-                      <td>{dado.nomeRaça}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
@@ -125,4 +111,4 @@ function ListagemAnimais() {
   );
 }
 
-export default ListagemAnimais;
+export default ListagemEspecies;

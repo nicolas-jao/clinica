@@ -11,20 +11,11 @@ import CadastroTutores from './views/cadastro-tutores';
 import ListagemAnimais from './views/listagem-animais';
 import CadastroAnimais from './views/cadastro-animais';
 
-/*import ListagemEspecies from './views/listagem-especies';
+import ListagemEspecies from './views/listagem-especies';
 import CadastroEspecies from './views/cadastro-especies';
 
 import ListagemRaças from './views/listagem-raças';
 import CadastroRaças from './views/cadastro-raças';
-*/
-
-/*
-        <Route path='/cadastro-especies/:idParam?' element={<CadastroEspecies />} />
-        <Route path='/listagem-especies' element={<ListagemEspecies />} />
-
-        <Route path='/cadastro-raças/:idParam?' element={<CadastroRaças />} />
-        <Route path='/listagem-raças' element={<ListagemRaças />} />
-*/
 
 
 
@@ -35,6 +26,7 @@ function Rotas(props) {
     <BrowserRouter>
       <Routes>
         <Route path='/login' element={<Login />} />
+
         <Route path='/cadastro-veterinarios/:idParam?' element={<CadastroVeterinarios />} />
         <Route path='/listagem-veterinarios' element={<ListagemVeterinarios />} />
 
@@ -43,6 +35,12 @@ function Rotas(props) {
         
         <Route path='/cadastro-animais/:idParam?' element={<CadastroAnimais />} />
         <Route path='/listagem-animais' element={<ListagemAnimais />} />
+      
+        <Route path='/cadastro-especies/:idParam?' element={<CadastroEspecies />} />
+        <Route path='/listagem-especies' element={<ListagemEspecies />} />
+
+        <Route path='/cadastro-raças/:idParam?' element={<CadastroRaças />} />
+        <Route path='/listagem-raças' element={<ListagemRaças />} />
       </Routes>
     </BrowserRouter>
   );
