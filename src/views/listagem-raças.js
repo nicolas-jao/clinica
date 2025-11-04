@@ -71,7 +71,7 @@ function ListagemRaças() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Novo Animal
+                Nova Raça
               </button>
               <table className='table table-hover'>
                 <thead>

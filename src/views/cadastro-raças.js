@@ -69,12 +69,15 @@ function CadastroRaças() {
   }
 
   async function buscar() {
-    await axios.get(`${baseURL}/${idParam}`).then((response) => {
-      setDados(response.data);
-    });
-    setId(dados.id);
-    setNome(dados.nome);
-    setEspecie(dados.idEspecie);
+
+    if(idParam != null){
+      await axios.get(`${baseURL}/${idParam}`).then((response) => {
+        setDados(response.data);
+      });
+      setId(dados.id);
+      setNome(dados.nome);
+      setEspecie(dados.idEspecie);
+    }
   }
 
   const [dadosEspecie, setDadosEspecie] = React.useState(null);

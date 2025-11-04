@@ -65,11 +65,13 @@ function CadastroEspecies() {
   }
 
   async function buscar() {
-    await axios.get(`${baseURL}/${idParam}`).then((response) => {
-      setDados(response.data);
-    });
-    setId(dados.id);
-    setNome(dados.nome);
+    if(idParam != null){
+      await axios.get(`${baseURL}/${idParam}`).then((response) => {
+        setDados(response.data);
+      });
+      setId(dados.id);
+      setNome(dados.nome);
+    }
   }
 
     const [dadosTutor, setDadosTutor] = React.useState(null);

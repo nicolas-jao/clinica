@@ -12,13 +12,14 @@ import '../custom.css';
 
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
+import { BASE_URL2 } from '../config/axios';
 
 function CadastroProcedimentos() {
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL}/procedimentos`;
+  const baseURL = `${BASE_URL2}/procedimentos`;
 
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
@@ -88,18 +89,20 @@ function CadastroProcedimentos() {
   }
 
   async function buscar() {
-    await axios.get(`${baseURL}/${idParam}`).then((response) => {
-      setDados(response.data);
-    });
-    setId(dados.id);
-    setNome(dados.nome);
-    setDataNascimento(dados.dataNascimento);
-    setSexo(dados.sexo);
-    setCastrado(dados.castrado);
-    setObservações(dados.observações);
-    setFoto(dados.foto);
-    setTutor(dados.idTutor);
-    setRaça(dados.idRaça);
+    if(idParam != null){
+      await axios.get(`${baseURL}/${idParam}`).then((response) => {
+        setDados(response.data);
+      });
+      setId(dados.id);
+      setNome(dados.nome);
+      setDataNascimento(dados.dataNascimento);
+      setSexo(dados.sexo);
+      setCastrado(dados.castrado);
+      setObservações(dados.observações);
+      setFoto(dados.foto);
+      setTutor(dados.idTutor);
+      setRaça(dados.idRaça);
+    }
   }
 
   const [dadosTutor, setDadosTutor] = React.useState(null);
