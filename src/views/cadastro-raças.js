@@ -22,7 +22,7 @@ function CadastroRaças() {
 
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
-  const [idEspecie, setEspecie] = useState(0);
+  const [idEspecie, setEspecie] = useState('');
 
   const [dados, setDados] = React.useState([]);
 

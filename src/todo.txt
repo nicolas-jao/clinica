@@ -2,3 +2,5 @@ Cadastros de animal, Espécie e Raças ok
 
 
 Precisa alterar os cadastros de Veterinários, Tutores, Consultas e Procedimentos.
+Consultas e Procedimentos redirecionam para animal
+Veterinários e Tutores redirecionam para curso (vestígio do código do marco)

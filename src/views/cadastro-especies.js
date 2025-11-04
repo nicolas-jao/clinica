@@ -22,6 +22,7 @@ function CadastroEspecies() {
 
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
+  
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
