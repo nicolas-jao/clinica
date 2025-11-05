@@ -21,37 +21,52 @@ function CadastroTutores() {
   const baseURL = `${BASE_URL}/tutores`;
 
   const [id, setId] = useState('');
-  const [matricula, setMatricula] = useState(0);
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
+  const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
-  const [celular, setCelular] = useState('');
-  const [idCurso, setIdCurso] = useState(0);
+  const [cep, setCep] = useState('');
+  const [logradouro, setLogradouro] = useState('');
+  const [numero, setNumero] = useState('');
+  const [complemento, setComplemento] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [uf, setUf] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
     if (idParam == null) {
       setId('');
-      setMatricula(0);
       setNome('');
       setCpf('');
+      setTelefone('');
       setEmail('');
-      setCelular('');
-      setIdCurso(0);
+      setCep('');
+      setLogradouro('');
+      setNumero('');
+      setComplemento('');
+      setBairro('');
+      setCidade('');
+      setUf('');
     } else {
       setId(dados.id);
-      setMatricula(dados.matricula);
       setNome(dados.nome);
       setCpf(dados.cpf);
+      setTelefone(dados.telefone);
       setEmail(dados.email);
-      setCelular(dados.celular);
-      setIdCurso(dados.idCurso);
+      setCep(dados.cep);
+      setLogradouro(dados.logradouro);
+      setNumero(dados.numero);
+      setComplemento(dados.complemento);
+      setBairro(dados.bairro);
+      setCidade(dados.cidade);
+      setUf(dados.uf);
     }
   }
 
   async function salvar() {
-    let data = { id, matricula, nome, cpf, email, celular, idCurso };
+    let data = { id, nome, cpf, telefone, email, cep, logradouro, numero, complemento, bairro, cidade, uf};
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -86,46 +101,32 @@ function CadastroTutores() {
         setDados(response.data);
       });
       setId(dados.id);
-      setMatricula(dados.matricula);
       setNome(dados.nome);
       setCpf(dados.cpf);
+      setTelefone(dados.telefone);
       setEmail(dados.email);
-      setCelular(dados.celular);
-      setIdCurso(dados.idCurso);
+      setCep(dados.cep);
+      setLogradouro(dados.logradouro);
+      setNumero(dados.numero);
+      setComplemento(dados.complemento);
+      setBairro(dados.bairro);
+      setCidade(dados.cidade);
+      setUf(dados.uf);
     }
   }
-
-  const [dadosCursos, setDadosCursos] = React.useState(null);
-
-  useEffect(() => {
-    axios.get(`${BASE_URL}/cursos`).then((response) => {
-      setDadosCursos(response.data);
-    });
-  }, []);
 
   useEffect(() => {
     buscar(); // eslint-disable-next-line
   }, [id]);
 
   if (!dados) return null;
-  if (!dadosCursos) return null;
 
   return (
     <div className='container'>
-      <Card title='Cadastro de Veterinário'>
+      <Card title='Cadastro de Tutores'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
-              <FormGroup label='Matrícula: *' htmlFor='inputMatricula'>
-                <input
-                  type='text'
-                  id='inputMatricula'
-                  value={matricula}
-                  className='form-control'
-                  name='matricula'
-                  onChange={(e) => setMatricula(e.target.value)}
-                />
-              </FormGroup>
               <FormGroup label='Nome: *' htmlFor='inputNome'>
                 <input
                   type='text'
@@ -139,12 +140,23 @@ function CadastroTutores() {
               <FormGroup label='CPF: *' htmlFor='inputCpf'>
                 <input
                   type='text'
+                  minLength='11'
                   maxLength='11'
                   id='inputCpf'
                   value={cpf}
                   className='form-control'
                   name='cpf'
                   onChange={(e) => setCpf(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup label='Telefone: *' htmlFor='inputTelefone'>
+                <input
+                  type='number'
+                  id='inputTelefone'
+                  value={telefone}
+                  className='form-control'
+                  name='telefone'
+                  onChange={(e) => setTelefone(e.target.value)}
                 />
               </FormGroup>
               <FormGroup label='Email: *' htmlFor='inputEmail'>
@@ -157,33 +169,75 @@ function CadastroTutores() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='Celular:' htmlFor='inputCelular'>
+              <FormGroup label='CEP:' htmlFor='inputCep'>
                 <input
-                  type='text'
-                  id='inputCelular'
-                  value={celular}
+                  type='number'
+                  id='inputCep'
+                  value={cep}
                   className='form-control'
-                  name='celular'
-                  onChange={(e) => setCelular(e.target.value)}
+                  name='cep'
+                  onChange={(e) => setCep(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='Curso: *' htmlFor='selectCurso'>
-                <select
-                  className='form-select'
-                  id='selectCurso'
-                  name='idCurso'
-                  value={idCurso}
-                  onChange={(e) => setIdCurso(e.target.value)}
-                >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
-                  {dadosCursos.map((dado) => (
-                    <option key={dado.id} value={dado.id}>
-                      {dado.nome}
-                    </option>
-                  ))}
-                </select>
+              <FormGroup label='Logradouro:' htmlFor='inputLogradouro'>
+                <input
+                  type='text'
+                  id='inputLogradouro'
+                  value={logradouro}
+                  className='form-control'
+                  name='logradouro'
+                  onChange={(e) => setLogradouro(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup label='Número:' htmlFor='inputNumero'>
+                <input
+                  type='number'
+                  id='inputNumero'
+                  value={numero}
+                  className='form-control'
+                  name='numero'
+                  onChange={(e) => setNumero(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup label='Complemento:' htmlFor='inputComplemento'>
+                <input
+                  type='text'
+                  id='inputComplemento'
+                  value={complemento}
+                  className='form-control'
+                  name='complemento'
+                  onChange={(e) => setComplemento(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup label='Bairro:' htmlFor='inputBairro'>
+                <input
+                  type='text'
+                  id='inputBairro'
+                  value={bairro}
+                  className='form-control'
+                  name='bairro'
+                  onChange={(e) => setBairro(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup label='Cidade:' htmlFor='inputCidade'>
+                <input
+                  type='text'
+                  id='inputCidade'
+                  value={cidade}
+                  className='form-control'
+                  name='cidade'
+                  onChange={(e) => setCidade(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup label='UF:' htmlFor='inputUf'>
+                <input
+                  type='text'
+                  id='inputUf'
+                  value={uf}
+                  className='form-control'
+                  name='uf'
+                  onChange={(e) => setUf(e.target.value)}
+                />
               </FormGroup>
               <Stack spacing={1} padding={1} direction='row'>
                 <button
