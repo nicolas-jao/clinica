@@ -11,7 +11,6 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 import '../custom.css';
 
 import axios from 'axios';
-import { BASE_URL } from '../config/axios';
 import { BASE_URL2 } from '../config/axios';
 
 function CadastroProcedimentos() {
@@ -23,13 +22,7 @@ function CadastroProcedimentos() {
 
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
-  const [dataNascimento, setDataNascimento] = useState('');
-  const [sexo, setSexo] = useState('');
-  const [castrado, setCastrado] = useState('');
-  const [observações, setObservações] = useState('');
-  const [foto, setFoto] = useState('');
-  const [idTutor, setTutor] = useState('');
-  const [idRaça, setRaça] = useState('');
+  const [custo, setCusto] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
@@ -37,29 +30,16 @@ function CadastroProcedimentos() {
     if (idParam == null) {
       setId('');
       setNome('');
-      setDataNascimento('');
-      setSexo('');
-      setCastrado('');
-      setObservações('');
-      setFoto('');
-      setTutor('');
-      setRaça('');
+      setCusto('');
 
     } else {
       setId(dados.id);
       setNome(dados.nome);
-      setDataNascimento(dados.dataNascimento);
-      setSexo(dados.sexo);
-      setCastrado(dados.castrado);
-      setObservações(dados.observações);
-      setFoto(dados.foto);
-      setTutor(dados.idTutor);
-      setRaça(dados.idRaça);
-    }
+      setCusto(dados.custo);    }
   }
 
   async function salvar() {
-    let data = { id, nome, dataNascimento, sexo, castrado, observações, foto, idTutor, idRaça };
+    let data = { id, nome, custo};
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -95,30 +75,15 @@ function CadastroProcedimentos() {
       });
       setId(dados.id);
       setNome(dados.nome);
-      setDataNascimento(dados.dataNascimento);
-      setSexo(dados.sexo);
-      setCastrado(dados.castrado);
-      setObservações(dados.observações);
-      setFoto(dados.foto);
-      setTutor(dados.idTutor);
-      setRaça(dados.idRaça);
+      setCusto(dados.custo);
     }
   }
-
-  const [dadosTutor, setDadosTutor] = React.useState(null);
-
-  useEffect(() => {
-    axios.get(`${BASE_URL}/tutores`).then((response) => {
-      setDadosTutor(response.data);
-    });
-  }, []);
 
   useEffect(() => {
     buscar(); // eslint-disable-next-line
   }, [id]);
 
   if (!dados) return null;
-  if (!dadosTutor) return null;
 
 return (
     <div className='container'>
@@ -136,97 +101,18 @@ return (
                   onChange={(e) => setNome(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='Data de Nascimento: *' htmlFor='inputData'>
+              <FormGroup label='Data de Custo: *' htmlFor='inputData'>
                 <input
-                  type='text'
+                  type='number'
                   maxLength='11'
                   id='inputData'
-                  value={dataNascimento}
+                  value={custo}
                   className='form-control'
-                  name='dataNascimento'
-                  onChange={(e) => setDataNascimento(e.target.value)}
+                  name='custo'
+                  onChange={(e) => setCusto(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='Sexo: *' htmlFor='inputSexo'>
-                <input
-                  type='sexo'
-                  id='inputSexo'
-                  value={sexo}
-                  className='form-control'
-                  name='sexo'
-                  onChange={(e) => setSexo(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label='Castrado:' htmlFor='inputCastrado'>
-                <input
-                  type='text'
-                  id='inputCastrado'
-                  value={castrado}
-                  className='form-control'
-                  name='castrado'
-                  onChange={(e) => setCastrado(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label='Observações:' htmlFor='inputObs'>
-                <input
-                  type='text'
-                  id='inputObs'
-                  value={observações}
-                  className='form-control'
-                  name='obs'
-                  onChange={(e) => setObservações(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup label='Foto:' htmlFor='inputFoto'>
-                <input
-                  type='text'
-                  id='inputFoto'
-                  value={foto}
-                  className='form-control'
-                  name='foto'
-                  onChange={(e) => setFoto(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup label='Tutor: *' htmlFor='selectTutor'>
-                <select
-                  className='form-select'
-                  id='selectTutor'
-                  name='idTutor'
-                  value={idTutor}
-                  onChange={(e) => setTutor(e.target.value)}
-                >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
-                  {dadosTutor.map((dado) => (
-                    <option key={dado.id} value={dado.id}>
-                      {dado.nome}
-                    </option>
-                  ))}
-                </select>
-              </FormGroup>
-              
-               <FormGroup label='Raça: *' htmlFor='selectRaça'>
-                <select
-                  className='form-select'
-                  id='selectRaça'
-                  name='idRaça'
-                  value={idRaça}
-                  onChange={(e) => setRaça(e.target.value)}
-                >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
-                  {dadosTutor.map((dado) => (
-                    <option key={dado.id} value={dado.id}>
-                      {dado.id}
-                    </option>
-                  ))}
-                </select>
-              </FormGroup>
-
+ 
               <Stack spacing={1} padding={1} direction='row'>
                 <button
                   onClick={salvar}

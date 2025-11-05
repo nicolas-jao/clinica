@@ -18,11 +18,12 @@ function CadastroRaças() {
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL}/raças`;
+  const baseURL = `${BASE_URL}/racas`;
 
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
-  const [idEspecie, setEspecie] = useState('');
+  const [idEspecie, setIdEspecie] = useState('');
+  const [nomeEspecie, setNomeEspecie] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
@@ -30,16 +31,18 @@ function CadastroRaças() {
     if (idParam == null) {
       setId('');
       setNome('');
-      setEspecie('');
+      setIdEspecie('');
+      setNomeEspecie('');
     } else {
       setId(dados.id);
       setNome(dados.nome);
-      setEspecie(dados.idEspecie);
+      setIdEspecie(dados.idEspecie);
+      setNomeEspecie(dados.nomeEspecie);
     }
   }
 
   async function salvar() {
-    let data = { id, nome, idEspecie };
+    let data = { id, nome, idEspecie, nomeEspecie};
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -76,7 +79,8 @@ function CadastroRaças() {
       });
       setId(dados.id);
       setNome(dados.nome);
-      setEspecie(dados.idEspecie);
+      setIdEspecie(dados.idEspecie);
+      setNomeEspecie(dados.nomeEspecie);
     }
   }
 
@@ -117,7 +121,7 @@ function CadastroRaças() {
                   id='selectEspecie'
                   name='idEspecie'
                   value={idEspecie}
-                  onChange={(e) => setEspecie(e.target.value)}
+                  onChange={(e) => setIdEspecie(e.target.value)}
                 >
                   <option key='0' value='0'>
                     {' '}

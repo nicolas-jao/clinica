@@ -22,44 +22,41 @@ function CadastroConsultas() {
   const baseURL = `${BASE_URL2}/consultas`;
 
   const [id, setId] = useState('');
-  const [nome, setNome] = useState('');
-  const [dataNascimento, setDataNascimento] = useState('');
-  const [sexo, setSexo] = useState('');
-  const [castrado, setCastrado] = useState('');
-  const [observações, setObservações] = useState('');
-  const [foto, setFoto] = useState('');
-  const [idTutor, setTutor] = useState('');
-  const [idRaça, setRaça] = useState('');
+  const [dia, setDia] = useState('');
+  const [orientacoes, setOrientacoes] = useState('');
+  const [status, setStatus] = useState('');
+  const [idVet, setIdVet] = useState('');
+  const [nomeVet, setNomeVet] = useState('');
+  const [idAnimal, setIdAnimal] = useState('');
+  const [nomeAnimal, setNomeAnimal] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
     if (idParam == null) {
       setId('');
-      setNome('');
-      setDataNascimento('');
-      setSexo('');
-      setCastrado('');
-      setObservações('');
-      setFoto('');
-      setTutor('');
-      setRaça('');
+      setDia('');
+      setOrientacoes('');
+      setStatus('');
+      setIdVet('');
+      setNomeVet('');
+      setIdAnimal('');
+      setNomeAnimal('');
 
     } else {
       setId(dados.id);
-      setNome(dados.nome);
-      setDataNascimento(dados.dataNascimento);
-      setSexo(dados.sexo);
-      setCastrado(dados.castrado);
-      setObservações(dados.observações);
-      setFoto(dados.foto);
-      setTutor(dados.idTutor);
-      setRaça(dados.idRaça);
+      setDia(dados.data);
+      setOrientacoes(dados.orientacoes);
+      setStatus(dados.status);
+      setIdVet(dados.idVet);
+      setNomeVet(dados.nomeVet);
+      setIdAnimal(dados.idAnimal);
+      setNomeAnimal(dados.nomeAnimal);
     }
   }
 
   async function salvar() {
-    let data = { id, nome, dataNascimento, sexo, castrado, observações, foto, idTutor, idRaça };
+    let data = { id, dia, orientacoes, status, idVet, nomeVet, idAnimal, nomeAnimal};
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -94,22 +91,30 @@ function CadastroConsultas() {
         setDados(response.data);
       });
       setId(dados.id);
-      setNome(dados.nome);
-      setDataNascimento(dados.dataNascimento);
-      setSexo(dados.sexo);
-      setCastrado(dados.castrado);
-      setObservações(dados.observações);
-      setFoto(dados.foto);
-      setTutor(dados.idTutor);
-      setRaça(dados.idRaça);
+      setDia(dados.dia);
+      setOrientacoes(dados.orientacoes);
+      setStatus(dados.status);
+      setIdVet(dados.idVet);
+      setNomeVet(dados.nomeVet);
+      setIdAnimal(dados.idAnimal);
+      setNomeAnimal(dados.nomeAnimal);
     }
   }
 
-  const [dadosTutor, setDadosTutor] = React.useState(null);
+  const [dadosVet, setDadosVet] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/tutores`).then((response) => {
-      setDadosTutor(response.data);
+    axios.get(`${BASE_URL}/veterinarios`).then((response) => {
+      setDadosVet(response.data);
+    });
+  }, []);
+
+
+    const [dadosAnimais, setDadosAnimais] = React.useState(null);
+
+    useEffect(() => {
+    axios.get(`${BASE_URL}/animais`).then((response) => {
+      setDadosAnimais(response.data);
     });
   }, []);
 
@@ -118,110 +123,85 @@ function CadastroConsultas() {
   }, [id]);
 
   if (!dados) return null;
-  if (!dadosTutor) return null;
+  if (!dadosVet) return null;
+  if (!dadosAnimais) return null;
 
 return (
     <div className='container'>
-      <Card title='Cadastro de Animal'>
+      <Card title='Agendamento de Consulta'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
-              <FormGroup label='Nome: *' htmlFor='inputNome'>
+              <FormGroup label='Data: *' htmlFor='inputDia'>
                 <input
-                  type='text'
-                  id='inputNome'
-                  value={nome}
+                  type='date'
+                  id='inputDia'
+                  value={dia}
                   className='form-control'
-                  name='nome'
-                  onChange={(e) => setNome(e.target.value)}
+                  name='dia'
+                  onChange={(e) => setDia(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='Data de Nascimento: *' htmlFor='inputData'>
+              <FormGroup label='Orientacoes: *' htmlFor=''>
+                <input
+                  type='text'
+                  maxLength='50'
+                  id=''
+                  value={orientacoes}
+                  className='form-control'
+                  name=''
+                  onChange={(e) => setOrientacoes(e.target.value)}
+                />
+              </FormGroup>
+
+
+                <FormGroup label='Status: *' htmlFor=''>
                 <input
                   type='text'
                   maxLength='11'
-                  id='inputData'
-                  value={dataNascimento}
+                  id=''
+                  value={status}
                   className='form-control'
-                  name='dataNascimento'
-                  onChange={(e) => setDataNascimento(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label='Sexo: *' htmlFor='inputSexo'>
-                <input
-                  type='sexo'
-                  id='inputSexo'
-                  value={sexo}
-                  className='form-control'
-                  name='sexo'
-                  onChange={(e) => setSexo(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label='Castrado:' htmlFor='inputCastrado'>
-                <input
-                  type='text'
-                  id='inputCastrado'
-                  value={castrado}
-                  className='form-control'
-                  name='castrado'
-                  onChange={(e) => setCastrado(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label='Observações:' htmlFor='inputObs'>
-                <input
-                  type='text'
-                  id='inputObs'
-                  value={observações}
-                  className='form-control'
-                  name='obs'
-                  onChange={(e) => setObservações(e.target.value)}
+                  name=''
+                  onChange={(e) => setStatus(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup label='Foto:' htmlFor='inputFoto'>
-                <input
-                  type='text'
-                  id='inputFoto'
-                  value={foto}
-                  className='form-control'
-                  name='foto'
-                  onChange={(e) => setFoto(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup label='Tutor: *' htmlFor='selectTutor'>
+               <FormGroup label='Veterinário: *' htmlFor='selectVeterinario'>
                 <select
                   className='form-select'
-                  id='selectTutor'
-                  name='idTutor'
-                  value={idTutor}
-                  onChange={(e) => setTutor(e.target.value)}
+                  id='selectVeterinario'
+                  name='idVet'
+                  value={idVet}
+                  onChange={(e) => setIdVet(e.target.value)}
                 >
                   <option key='0' value='0'>
                     {' '}
                   </option>
-                  {dadosTutor.map((dado) => (
-                    <option key={dado.id} value={dado.id}>
+                  {dadosVet.map((dado) => (
+                      <option key={dado.id} value={dado.id}>
                       {dado.nome}
                     </option>
                   ))}
                 </select>
               </FormGroup>
-              
-               <FormGroup label='Raça: *' htmlFor='selectRaça'>
+
+
+
+               <FormGroup label='Animal: *' htmlFor='selectAnimal'>
                 <select
                   className='form-select'
-                  id='selectRaça'
-                  name='idRaça'
-                  value={idRaça}
-                  onChange={(e) => setRaça(e.target.value)}
+                  id='selectAnimal'
+                  name='idAnimal'
+                  value={idAnimal}
+                  onChange={(e) => setIdAnimal(e.target.value)}
                 >
                   <option key='0' value='0'>
                     {' '}
                   </option>
-                  {dadosTutor.map((dado) => (
-                    <option key={dado.id} value={dado.id}>
-                      {dado.id}
+                  {dadosAnimais.map((dado) => (
+                      <option key={dado.id} value={dado.id}>
+                      {dado.nome}
                     </option>
                   ))}
                 </select>
