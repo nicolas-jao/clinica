@@ -90,7 +90,7 @@ function ListagemVeterinarios() {
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
                       <td>{dado.cpf}</td>
-                      <td>{dado.CRMV}</td>
+                      <td>{dado.crmv}</td>
                       <td>{dado.telefone}</td>
                       <td>{dado.email}</td>
                       <td>{dado.cep}</td>
