@@ -146,8 +146,7 @@ return (
               </FormGroup>
               <FormGroup label='Data de Nascimento: *' htmlFor='inputData'>
                 <input
-                  type='text'
-                  maxLength='11'
+                  type='date'
                   id='inputData'
                   value={dataNascimento}
                   className='form-control'
@@ -156,34 +155,64 @@ return (
                 />
               </FormGroup>
               <FormGroup label='Sexo: *' htmlFor='inputSexo'>
-                <input
-                  type='sexo'
-                  id='inputSexo'
-                  value={sexo}
-                  className='form-control'
-                  name='sexo'
-                  onChange={(e) => setSexo(e.target.value)}
-                />
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="sexo"
+                        id="inputSexo"
+                        value={"M"}
+                        checked={sexo === 'M'}
+                        onChange={(e) => setSexo(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="inputSexo">
+                        Macho
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="sexo"
+                        id="inputSexo2"
+                        value={'F'}
+                        checked={sexo === 'F'}
+                        onChange={(e) => setSexo(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="inputSexo2">
+                        Fêmea
+                    </label>
+                </div>
               </FormGroup>
               <FormGroup label='Castrado:' htmlFor='inputCastrado'>
-                <input
-                  type='text'
-                  id='inputCastrado'
-                  value={castrado}
-                  className='form-control'
-                  name='castrado'
-                  onChange={(e) => setCastrado(e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup label='Observações:' htmlFor='inputObs'>
-                <input
-                  type='text'
-                  id='inputObs'
-                  value={observações}
-                  className='form-control'
-                  name='obs'
-                  onChange={(e) => setObservações(e.target.value)}
-                />
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="castrado"
+                        id="inputCastrado"
+                        value={true}
+                        checked={castrado === true || castrado === 'true'}
+                        onChange={(e) => setCastrado(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="inputCastrado">
+                        Castrado
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="radio"
+                        name="castrado"
+                        id="inputCastradoNao"
+                        value={false}
+                        checked={castrado === false || castrado === 'false'}
+                        onChange={(e) => setCastrado(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="inputCastradoNao">
+                        Não castrado
+                    </label>
+                </div>
               </FormGroup>
 
               <FormGroup label='Foto:' htmlFor='inputFoto'>
