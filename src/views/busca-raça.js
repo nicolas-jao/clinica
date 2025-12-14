@@ -6,34 +6,35 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 
 import '../custom.css';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
-import { BASE_URL } from '../config/axios';
+import { BASE_URL2 } from '../config/axios';
 
-const baseURL = `${BASE_URL}/especies`;
-
-function ListagemEspecies() {
+function BuscaRacas() {
   const navigate = useNavigate();
+  const { id: especieId } = useParams();
+  const baseURL = `${BASE_URL2}/busca-raca/${especieId}`;
 
   const cadastrar = () => {
-    navigate(`/cadastro-especies`);
+    navigate(`/cadastro-raças`);
   };
 
   const editar = (id) => {
-    navigate(`/cadastro-especies/${id}`);
+    navigate(`/cadastro-raças/${id}`);
   };
 
-  const busca = (id) => {
-    navigate(`/busca-raça/${id}`);
+  const voltar = () => {
+    navigate('/listagem-especies');
   };
 
   const [dados, setDados] = React.useState(null);
+  const [lista, setLista] = React.useState(null);
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
@@ -58,14 +59,17 @@ function ListagemEspecies() {
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
       setDados(response.data);
+      setLista(response.data.lista);
     });
   }, []);
 
   if (!dados) return null;
+  console.log(dados.nome  );
+  if (!lista) return null;
 
   return (
     <div className='container'>
-      <Card title='Listagem de Espécies'>
+      <Card title={`Raças de ${dados.nome}`}>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
@@ -74,8 +78,16 @@ function ListagemEspecies() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Nova Espécie
+                Nova Raça
               </button>
+              <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={() => voltar()}
+                >
+                  <ArrowBackIcon sx={{ fontSize: 20, verticalAlign: 'middle', marginRight: 1 }}/>
+                  Voltar para Espécies
+                </button>
               <table className='table table-hover'>
                 <thead>
                   <tr>
@@ -83,7 +95,7 @@ function ListagemEspecies() {
                   </tr>
                 </thead>
                 <tbody>
-                  {dados.map((dado) => (
+                  {lista.map((dado) => (
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
                       <td>
@@ -100,13 +112,7 @@ function ListagemEspecies() {
                           >
                             <DeleteIcon />
                           </IconButton>
-                          <IconButton
-                            aria-label='buscar'
-                            onClick={() => busca(dado.id)}
-                          >
-                            <ArrowForwardIcon />
-                          </IconButton>
-                        </Stack>
+                         </Stack>
                       </td>
                     </tr>
                   ))}
@@ -120,4 +126,4 @@ function ListagemEspecies() {
   );
 }
 
-export default ListagemEspecies;
+export default BuscaRacas;

@@ -23,7 +23,7 @@ import CadastroConsultas from './views/cadastro-consultas';
 import ListagemProcedimentos from './views/listagem-procedimentos';
 import CadastroProcedimentos from './views/cadastro-procedimentos';
 
-
+import BuscaRaças from './views/busca-raça';
 
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 
@@ -53,6 +53,8 @@ function Rotas(props) {
 
         <Route path='/cadastro-procedimentos/:idParam?' element={<CadastroProcedimentos />} />
         <Route path='/listagem-procedimentos' element={<ListagemProcedimentos />} />
+
+        <Route path="/busca-raça/:id" element={<BuscaRaças />} />
 
       </Routes>
     </BrowserRouter>
