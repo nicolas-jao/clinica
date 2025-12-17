@@ -82,7 +82,7 @@ function CadastroVeterinarios() {
         })
         .then(function (response) {
           mensagemSucesso(`Veterinario ${nome} cadastrado com sucesso!`);
-          navigate(`/listagem-veterinarios`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -94,7 +94,7 @@ function CadastroVeterinarios() {
         })
         .then(function (response) {
           mensagemSucesso(`Veterinário ${nome} alterado com sucesso!`);
-          navigate(`/listagem-veterinarios`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

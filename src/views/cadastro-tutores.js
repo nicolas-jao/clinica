@@ -75,7 +75,7 @@ function CadastroTutores() {
         })
         .then(function (response) {
           mensagemSucesso(`Tutor ${nome} cadastrado com sucesso!`);
-          navigate(`/listagem-tutores`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -87,7 +87,7 @@ function CadastroTutores() {
         })
         .then(function (response) {
           mensagemSucesso(`Tutor ${nome} alterado com sucesso!`);
-          navigate(`/listagem-tutores`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

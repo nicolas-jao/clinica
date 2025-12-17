@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
@@ -29,6 +30,9 @@ function ListagemRaças() {
     navigate(`/cadastro-raças/${id}`);
   };
 
+  const voltar = () => {
+    navigate(-1);
+  };
   const [dados, setDados] = React.useState(null);
 
   async function excluir(id) {
@@ -72,6 +76,14 @@ function ListagemRaças() {
               >
                 Nova Raça
               </button>
+              <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={() => voltar()}
+                >
+                  Voltar
+                  <ArrowBackIcon/>
+                </button>
               <table className='table table-hover'>
                 <thead>
                   <tr>

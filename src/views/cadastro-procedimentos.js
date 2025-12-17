@@ -48,7 +48,7 @@ function CadastroProcedimentos() {
         })
         .then(function (response) {
           mensagemSucesso(`Procedimento ${nome} cadastrado com sucesso!`);
-          navigate(`/listagem-procedimentos`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -60,7 +60,7 @@ function CadastroProcedimentos() {
         })
         .then(function (response) {
           mensagemSucesso(`Procedimento ${nome} alterado com sucesso!`);
-          navigate(`/listagem-procedimentos`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

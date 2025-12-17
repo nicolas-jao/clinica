@@ -45,7 +45,7 @@ function CadastroEspecies() {
         })
         .then(function (response) {
           mensagemSucesso(`Espécie ${nome} cadastrada com sucesso!`);
-          navigate(`/listagem-especies`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -57,7 +57,7 @@ function CadastroEspecies() {
         })
         .then(function (response) {
           mensagemSucesso(`Espécie ${nome} alterada com sucesso!`);
-          navigate(`/listagem-especies`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

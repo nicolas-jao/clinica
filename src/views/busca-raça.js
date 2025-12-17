@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Card from '../components/card';
 
@@ -6,20 +7,19 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 
 import '../custom.css';
 
-import { useNavigate, useParams } from 'react-router-dom';
-
 import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
+import { BASE_URL } from '../config/axios';
 import { BASE_URL2 } from '../config/axios';
 
 function BuscaRacas() {
   const navigate = useNavigate();
-  const { id: especieId } = useParams();
-  const baseURL = `${BASE_URL2}/busca-raca/${especieId}`;
+  const { idParam } = useParams();
+  const baseURL = `${BASE_URL2}/busca-raca/${idParam}`;
 
   const cadastrar = () => {
     navigate(`/cadastro-raças`);
@@ -30,7 +30,7 @@ function BuscaRacas() {
   };
 
   const voltar = () => {
-    navigate('/listagem-especies');
+    navigate(-1);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -38,7 +38,7 @@ function BuscaRacas() {
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
-    let url = `${baseURL}/${id}`;
+    let url = `${BASE_URL}/racas/${id}`;
     await axios
       .delete(url, data, {
         headers: { 'Content-Type': 'application/json' },
@@ -64,7 +64,6 @@ function BuscaRacas() {
   }, []);
 
   if (!dados) return null;
-  console.log(dados.nome  );
   if (!lista) return null;
 
   return (
@@ -85,8 +84,8 @@ function BuscaRacas() {
                   className='btn btn-secondary'
                   onClick={() => voltar()}
                 >
-                  <ArrowBackIcon sx={{ fontSize: 20, verticalAlign: 'middle', marginRight: 1 }}/>
-                  Voltar para Espécies
+                  Voltar
+                  <ArrowBackIcon/>
                 </button>
               <table className='table table-hover'>
                 <thead>

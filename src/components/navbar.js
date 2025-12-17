@@ -47,13 +47,6 @@ function Navbar(props) {
               label='Espécies'
             />
           </ul>
-          < ul className='navbar-nav'>
-            <NavbarItem
-              render='true'
-              href='/listagem-raças'
-              label='Raças'
-            />
-          </ul>
           <ul className='navbar-nav'>
             <NavbarItem
               render='true'

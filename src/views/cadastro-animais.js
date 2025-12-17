@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams} from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 
@@ -15,7 +15,7 @@ import { BASE_URL } from '../config/axios';
 
 function CadastroAnimais() {
   const { idParam } = useParams();
-
+  
   const navigate = useNavigate();
 
   const baseURL = `${BASE_URL}/animais`;
@@ -67,7 +67,7 @@ function CadastroAnimais() {
         })
         .then(function (response) {
           mensagemSucesso(`Animal ${nome} cadastrado com sucesso!`);
-          navigate(`/listagem-animais`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -79,7 +79,7 @@ function CadastroAnimais() {
         })
         .then(function (response) {
           mensagemSucesso(`Animal ${nome} alterado com sucesso!`);
-          navigate(`/listagem-animais`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

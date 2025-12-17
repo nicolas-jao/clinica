@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
@@ -27,6 +28,10 @@ function ListagemVeterinarios() {
 
   const editar = (id) => {
     navigate(`/cadastro-veterinarios/${id}`);
+  };
+
+  const info = (id) => {
+    navigate(`/info-veterinarios/${id}`);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -110,6 +115,12 @@ function ListagemVeterinarios() {
                           >
                             <DeleteIcon />
                           </IconButton>
+                          {/* <IconButton
+                            aria-label='info'
+                            onClick={() => info(dado.id)}
+                          >
+                            <ArrowForwardIcon />
+                          </IconButton> */}
                         </Stack>
                       </td>
                     </tr>

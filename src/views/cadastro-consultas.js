@@ -65,7 +65,7 @@ function CadastroConsultas() {
         })
         .then(function (response) {
           mensagemSucesso(`Consulta cadastrada com sucesso!`);
-          navigate(`/listagem-consultas`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -77,7 +77,7 @@ function CadastroConsultas() {
         })
         .then(function (response) {
           mensagemSucesso(`Consulta alterada com sucesso!`);
-          navigate(`/listagem-consultas`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

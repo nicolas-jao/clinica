@@ -51,7 +51,7 @@ function CadastroRaças() {
         })
         .then(function (response) {
           mensagemSucesso(`Raça ${nome} cadastrada com sucesso!`);
-          navigate(`/listagem-raças`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -63,7 +63,7 @@ function CadastroRaças() {
         })
         .then(function (response) {
           mensagemSucesso(`Raça ${nome} alterada com sucesso!`);
-          navigate(`/listagem-raças`);
+          navigate(-1);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

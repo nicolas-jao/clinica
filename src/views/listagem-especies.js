@@ -13,6 +13,7 @@ import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
@@ -31,6 +32,10 @@ function ListagemEspecies() {
 
   const busca = (id) => {
     navigate(`/busca-raça/${id}`);
+  };
+
+  const listagem = () => {
+    navigate(`/listagem-raças/`);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -75,6 +80,13 @@ function ListagemEspecies() {
                 onClick={() => cadastrar()}
               >
                 Nova Espécie
+              </button>
+              <button
+                type='button'
+                className='btn btn-secondary'
+                onClick={() => listagem()}
+              >
+                Listagem de Raças
               </button>
               <table className='table table-hover'>
                 <thead>

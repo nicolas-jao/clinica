@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Card from '../components/card';
 
@@ -6,99 +7,105 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 
 import '../custom.css';
 
-import { useNavigate } from 'react-router-dom';
-
 import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
+import { BASE_URL2 } from '../config/axios';
 
-const baseURL = `${BASE_URL}/tutores`;
-
-function ListagemTutores() {
+function InfoTutores() {
   const navigate = useNavigate();
+  const { idParam } = useParams();
+  const baseURL = `${BASE_URL2}/info-tutores/${idParam}`;
 
-  const cadastrar = () => {
-    navigate(`/cadastro-tutores`);
-  };
 
   const editar = (id) => {
-    navigate(`/cadastro-tutores/${id}`);
+    navigate(`/cadastro-animais/${id}`);
   };
 
-  const info = (id) => {
-    navigate(`/info-tutores/${id}`);
+  const voltar = () => {
+    navigate('/listagem-tutores/');
   };
 
   const [dados, setDados] = React.useState(null);
+  const [lista, setLista] = React.useState(null);
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
-    let url = `${baseURL}/${id}`;
+    let url = `${BASE_URL}/animais/${id}`;
     await axios
       .delete(url, data, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json'},
       })
       .then(function (response) {
-        mensagemSucesso(`Tutor excluído com sucesso!`);
-        setDados(
-          dados.filter((dado) => {
+        mensagemSucesso(`Animal excluído com sucesso!`);
+        setLista(
+          lista.filter((dado) => {
             return dado.id !== id;
           })
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o tutor`);
+        mensagemErro(`Erro ao excluir animal`);
       });
   }
 
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
       setDados(response.data);
+      setLista(response.data.lista);
     });
   }, []);
 
   if (!dados) return null;
+  if (!lista) return null;
 
   return (
+    <>
     <div className='container'>
-      <Card title='Listagem de Tutores'>
+      <button
+        type='button'
+        className='btn btn-secondary'
+        onClick={() => voltar()}
+      >
+        Voltar
+        <ArrowBackIcon/>
+      </button>
+      <br></br>
+      <br></br>
+      <Card title={`Dados de ${dados.nome}`}>
         <div className='row'>
           <div className='col-lg-12'>
-            <div className='bs-component'>
-              <button
-                type='button'
-                className='btn btn-warning'
-                onClick={() => cadastrar()}
-              >
-                Novo Tutor
-              </button>
+          <tbody>
+                  Nome: {dados.nome}
+          </tbody>
+          </div>
+        </div>
+      </Card>
+    </div>
+    <br></br>
+    <div className='container'>
+      <Card title={`Animais de ${dados.nome}`}>
+        <div className='row'>
+          <div className='col-lg-12'>
+            <div className='bs-component'>   
               <table className='table table-hover'>
                 <thead>
                   <tr>
                     <th scope='col'>Nome</th>
-                    <th scope='col'>CPF</th>
-                    <th scope='col'>Telefone</th>
-                    <th scope='col'>Email</th>
-                    <th scope='col'>CEP</th>
-                    <th scope='col'>Número</th>
-                    <th scope='col'>Complemento</th>
+                    <th scope='col'>Espécie</th>
+                    <th scope='col'>Raça</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {dados.map((dado) => (
+                  {lista.map((dado) => (
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
-                      <td>{dado.cpf}</td>
-                      <td>{dado.telefone}</td>
-                      <td>{dado.email}</td>
-                      <td>{dado.cep}</td>
-                      <td>{dado.numero}</td>
-                      <td>{dado.complemento}</td>
+                      <td>{dado.especie}</td>
+                      <td>{dado.raça}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
@@ -113,13 +120,7 @@ function ListagemTutores() {
                           >
                             <DeleteIcon />
                           </IconButton>
-                          <IconButton
-                            aria-label='info'
-                            onClick={() => info(dado.id)}
-                          >
-                            <ArrowForwardIcon />
-                          </IconButton>
-                        </Stack>
+                         </Stack>
                       </td>
                     </tr>
                   ))}
@@ -130,7 +131,8 @@ function ListagemTutores() {
         </div>
       </Card>
     </div>
+    </>
   );
 }
 
-export default ListagemTutores;
+export default InfoTutores;
