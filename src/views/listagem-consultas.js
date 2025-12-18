@@ -34,6 +34,10 @@ function ListagemConsultas() {
     navigate(`/info-consultas/${id}`);
   };
 
+    const listagem = () => {
+    navigate(`/listagem-procedimentos/`);
+  };
+
   const [dados, setDados] = React.useState(null);
 
   async function excluir(id) {
@@ -76,6 +80,13 @@ function ListagemConsultas() {
                 onClick={() => cadastrar()}
               >
                 Nova Consulta
+              </button>
+              <button
+                type='button'
+                className='btn btn-secondary'
+                onClick={() => listagem()}
+              >
+                Listagem de Procedimentos
               </button>
               <table className='table table-hover'>
                 <thead>

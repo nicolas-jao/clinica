@@ -54,16 +54,6 @@ function Navbar(props) {
               label='Consultas'
             />
           </ul>
-          <ul className='navbar-nav'>
-            <NavbarItem
-              render='true'
-              href='/listagem-procedimentos'
-              label='Procedimentos'
-            />
-          </ul>
-
-
-
 
           <ul className='navbar-nav'>
             <NavbarItem render='true' href='/login' label='Entrar' />

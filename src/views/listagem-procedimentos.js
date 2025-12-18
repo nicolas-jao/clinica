@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import axios from 'axios';
 import { BASE_URL2 } from '../config/axios';
@@ -27,6 +28,10 @@ function ListagemProcedimentos() {
 
   const editar = (id) => {
     navigate(`/cadastro-procedimentos/${id}`);
+  };
+
+  const voltar = () => {
+    navigate(-1);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -72,6 +77,14 @@ function ListagemProcedimentos() {
               >
                 Novo Procedimento
               </button>
+              <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={() => voltar()}
+                >
+                  Voltar
+                  <ArrowBackIcon/>
+                </button>
               <table className='table table-hover'>
                 <thead>
                   <tr>
