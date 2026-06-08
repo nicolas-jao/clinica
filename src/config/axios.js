@@ -1,6 +1,5 @@
-export const BASE_URL = 'https://my-json-server.typicode.com/nicolas-jao/jsonfake';
-export const BASE_URL2 = 'https://my-json-server.typicode.com/nicolas-jao/jsonfake2';
-export const BASE_URL3 = 'https://my-json-server.typicode.com/nicolas-jao/jsonfake3';
+export const BASE_URL = 'http://localhost:8081/api/v1/';
+export const BASE_URL2 = 'http://localhost:8081/api/v1/';
 
 /*
 Veterinários, Tutores, Animais, Espécies e Raças:

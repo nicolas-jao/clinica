@@ -19,7 +19,7 @@ import { BASE_URL2 } from '../config/axios';
 function BuscaRacas() {
   const navigate = useNavigate();
   const { idParam } = useParams();
-  const baseURL = `${BASE_URL2}/busca-raca/${idParam}`;
+  const baseURL = `${BASE_URL2}/especies/${idParam}/racas`;
 
   const cadastrar = () => {
     navigate(`/cadastro-raças`);
@@ -58,8 +58,9 @@ function BuscaRacas() {
 
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
+      console.log(response.data);
       setDados(response.data);
-      setLista(response.data.lista);
+      setLista(response.data);
     });
   }, []);
 
