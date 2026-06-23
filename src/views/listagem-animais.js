@@ -1,9 +1,7 @@
 import React from 'react';
 
 import Card from '../components/card';
-
 import { mensagemSucesso, mensagemErro } from '../components/toastr';
-
 import '../custom.css';
 
 import { useNavigate } from 'react-router-dom';
@@ -14,10 +12,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import axios from 'axios';
-import { BASE_URL } from '../config/axios';
+import httpClient from '../config/axios';
 
-const baseURL = `${BASE_URL}/animais`;
+const urlBaseAnimais = '/api/v1/animais';
 
 function ListagemAnimais() {
   const navigate = useNavigate();
@@ -38,10 +35,13 @@ function ListagemAnimais() {
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
-    let url = `${baseURL}/${id}`;
-    await axios
-      .delete(url, data, {
+    let url = `${urlBaseAnimais}/${id}`;
+    
+    
+    await httpClient
+      .delete(url, {
         headers: { 'Content-Type': 'application/json' },
+        data: data 
       })
       .then(function (response) {
         mensagemSucesso(`Animal excluído com sucesso!`);
@@ -57,8 +57,11 @@ function ListagemAnimais() {
   }
 
   React.useEffect(() => {
-    axios.get(baseURL).then((response) => {
+  
+    httpClient.get(urlBaseAnimais).then((response) => {
       setDados(response.data);
+    }).catch(error => {
+      mensagemErro("Erro ao carregar a lista. Você está logado?");
     });
   }, []);
 
@@ -88,6 +91,7 @@ function ListagemAnimais() {
                     <th scope='col'>Foto</th>
                     <th scope='col'>Tutor</th>
                     <th scope='col'>Raça</th>
+                    <th scope='col'>Ações</th>
                   </tr>
                 </thead>
                 <tbody>

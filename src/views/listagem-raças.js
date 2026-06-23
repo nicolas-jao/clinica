@@ -14,10 +14,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import axios from 'axios';
-import { BASE_URL } from '../config/axios';
+import httpClient from '../config/axios';
 
-const baseURL = `${BASE_URL}/racas`;
+const baseURL = '/api/v1/racas';
 
 function ListagemRaças() {
   const navigate = useNavigate();
@@ -39,12 +38,15 @@ function ListagemRaças() {
   async function excluir(id) {
     let data = JSON.stringify({ id });
     let url = `${baseURL}/${id}`;
-    await axios
-      .delete(url, data, {
+    
+   
+    await httpClient
+      .delete(url, {
         headers: { 'Content-Type': 'application/json' },
+        data: data
       })
       .then(function (response) {
-        mensagemSucesso(`Raça excluído com sucesso!`);
+        mensagemSucesso(`Raça excluída com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -57,8 +59,11 @@ function ListagemRaças() {
   }
 
   React.useEffect(() => {
-    axios.get(baseURL).then((response) => {
+  
+    httpClient.get(baseURL).then((response) => {
       setDados(response.data);
+    }).catch(error => {
+      mensagemErro("Erro ao carregar a lista de raças.");
     });
   }, []);
 
@@ -90,6 +95,7 @@ function ListagemRaças() {
                   <tr>
                     <th scope='col'>Nome</th>
                     <th scope='col'>Espécie</th>
+                    <th scope='col'>Ações</th> {/*  */}
                   </tr>
                 </thead>
                 <tbody>

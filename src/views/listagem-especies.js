@@ -14,10 +14,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import axios from 'axios';
-import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL}/especies`;
+import httpClient from '../config/axios';
+
+const baseURL = '/api/v1/especies';
 
 function ListagemEspecies() {
   const navigate = useNavigate();
@@ -43,12 +43,14 @@ function ListagemEspecies() {
   async function excluir(id) {
     let data = JSON.stringify({ id });
     let url = `${baseURL}/${id}`;
-    await axios
-      .delete(url, data, {
+    
+    await httpClient
+      .delete(url, {
         headers: { 'Content-Type': 'application/json' },
+        data: data
       })
       .then(function (response) {
-        mensagemSucesso(`Espécie excluído com sucesso!`);
+        mensagemSucesso(`Espécie excluída com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -56,13 +58,16 @@ function ListagemEspecies() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o espécie`);
+        mensagemErro(`Erro ao excluir a espécie`);
       });
   }
 
   React.useEffect(() => {
-    axios.get(baseURL).then((response) => {
+   
+    httpClient.get(baseURL).then((response) => {
       setDados(response.data);
+    }).catch(error => {
+      mensagemErro("Erro ao carregar a lista de espécies.");
     });
   }, []);
 
@@ -92,6 +97,7 @@ function ListagemEspecies() {
                 <thead>
                   <tr>
                     <th scope='col'>Nome</th>
+                    <th scope='col'>Ações</th> {/*  */}
                   </tr>
                 </thead>
                 <tbody>

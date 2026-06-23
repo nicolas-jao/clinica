@@ -14,10 +14,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import axios from 'axios';
-import { BASE_URL2 } from '../config/axios';
+import httpClient from '../config/axios';
 
-const baseURL = `${BASE_URL2}/procedimentos`;
+const baseURL = '/api/v1/procedimentos';
 
 function ListagemProcedimentos() {
   const navigate = useNavigate();
@@ -39,9 +38,11 @@ function ListagemProcedimentos() {
   async function excluir(id) {
     let data = JSON.stringify({ id });
     let url = `${baseURL}/${id}`;
-    await axios
-      .delete(url, data, {
+    
+    await httpClient
+      .delete(url, {
         headers: { 'Content-Type': 'application/json' },
+        data: data
       })
       .then(function (response) {
         mensagemSucesso(`Procedimento excluído com sucesso!`);
@@ -57,8 +58,11 @@ function ListagemProcedimentos() {
   }
 
   React.useEffect(() => {
-    axios.get(baseURL).then((response) => {
+
+    httpClient.get(baseURL).then((response) => {
       setDados(response.data);
+    }).catch(error => {
+      mensagemErro("Erro ao carregar a lista de procedimentos.");
     });
   }, []);
 
@@ -90,6 +94,7 @@ function ListagemProcedimentos() {
                   <tr>
                     <th scope='col'>Nome</th>
                     <th scope='col'>Custo</th>
+                    <th scope='col'>Ações</th> {/* */}
                   </tr>
                 </thead>
                 <tbody>
