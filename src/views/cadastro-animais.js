@@ -1,36 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams} from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
-
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
-
 import { mensagemSucesso, mensagemErro } from '../components/toastr';
-
 import '../custom.css';
 
-import axios from 'axios';
-import { BASE_URL } from '../config/axios';
+import httpClient, { BASE_URL } from '../config/axios';
 
 function CadastroAnimais() {
   const { idParam } = useParams();
-  
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL}/animais`;
+  const baseURL = `/animais`; 
 
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
   const [sexo, setSexo] = useState('');
   const [castrado, setCastrado] = useState('');
-  const [observações, setObservações] = useState('');
+  const [observacoes, setObservacoes] = useState(''); 
   const [foto, setFoto] = useState('');
   const [idTutor, setTutor] = useState('');
-  const [idRaça, setRaça] = useState('');
+  const [idRaca, setRaca] = useState('');
 
-  const [dados, setDados] = React.useState([]);
+  const [dados, setDados] = React.useState(null);
 
   function inicializar() {
     if (idParam == null) {
@@ -39,96 +33,84 @@ function CadastroAnimais() {
       setDataNascimento('');
       setSexo('');
       setCastrado('');
-      setObservações('');
+      setObservacoes('');
       setFoto('');
       setTutor('');
-      setRaça('');
-
+      setRaca('');
     } else {
       setId(dados.id);
       setNome(dados.nome);
       setDataNascimento(dados.dataNascimento);
       setSexo(dados.sexo);
       setCastrado(dados.castrado);
-      setObservações(dados.observações);
+      setObservacoes(dados.observacoes);
       setFoto(dados.foto);
       setTutor(dados.idTutor);
-      setRaça(dados.idRaça);
+      setRaca(dados.idRaca);
     }
   }
 
   async function salvar() {
-    let data = { id, nome, dataNascimento, sexo, castrado, observações, foto, idTutor, idRaça };
-    data = JSON.stringify(data);
+    const data = { id, nome, dataNascimento, sexo, castrado, observacoes, foto, idTutor, idRaca };
+    
     if (idParam == null) {
-      await axios
-        .post(baseURL, data, {
-          headers: { 'Content-Type': 'application/json' },
-        })
+      await httpClient.post(baseURL, data)
         .then(function (response) {
           mensagemSucesso(`Animal ${nome} cadastrado com sucesso!`);
           navigate(-1);
         })
         .catch(function (error) {
-          mensagemErro(error.response.data);
+          mensagemErro("Erro ao cadastrar animal: " + error.response?.data);
         });
     } else {
-      await axios
-        .put(`${baseURL}/${idParam}`, data, {
-          headers: { 'Content-Type': 'application/json' },
-        })
+      await httpClient.put(`${baseURL}/${idParam}`, data)
         .then(function (response) {
           mensagemSucesso(`Animal ${nome} alterado com sucesso!`);
           navigate(-1);
         })
         .catch(function (error) {
-          mensagemErro(error.response.data);
+          mensagemErro("Erro ao alterar animal: " + error.response?.data);
         });
     }
   }
 
   async function buscar() {
-    if(idParam != null){
-        await axios.get(`${baseURL}/${idParam}`).then((response) => {
+    if (idParam != null) {
+      await httpClient.get(`${baseURL}/${idParam}`).then((response) => {
         setDados(response.data);
+       
+        const d = response.data;
+        setId(d.id);
+        setNome(d.nome);
+        setDataNascimento(d.dataNascimento);
+        setSexo(d.sexo);
+        setCastrado(d.castrado);
+        setObservacoes(d.observacoes);
+        setFoto(d.foto);
+        setTutor(d.idTutor);
+        setRaca(d.idRaca);
       });
-      setId(dados.id);
-      setNome(dados.nome);
-      setDataNascimento(dados.dataNascimento);
-      setSexo(dados.sexo);
-      setCastrado(dados.castrado);
-      setObservações(dados.observações);
-      setFoto(dados.foto);
-      setTutor(dados.idTutor);
-      setRaça(dados.idRaça);
     }
   }
 
   const [dadosTutor, setDadosTutor] = React.useState(null);
-
-  useEffect(() => {
-    axios.get(`${BASE_URL}/tutores`).then((response) => {
-      setDadosTutor(response.data);
-    });
-  }, []);
-
   const [dadosRaca, setDadosRaca] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/racas`).then((response) => {
+    httpClient.get(`/tutores`).then((response) => {
+      setDadosTutor(response.data);
+    });
+    httpClient.get(`/racas`).then((response) => {
       setDadosRaca(response.data);
     });
+    if (idParam != null) {
+        buscar();
+    }
   }, []);
 
-  useEffect(() => {
-    buscar(); // eslint-disable-next-line
-  }, [id]);
+  if (!dadosTutor || !dadosRaca) return null;
 
-  if (!dados) return null;
-  if (!dadosTutor) return null;
-  if (!dadosRaca) return null;
-
-return (
+  return (
     <div className='container'>
       <Card title='Cadastro de Animal'>
         <div className='row'>
@@ -154,132 +136,9 @@ return (
                   onChange={(e) => setDataNascimento(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='Sexo: *' htmlFor='inputSexo'>
-                <div className="form-check">
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name="sexo"
-                        id="inputSexo"
-                        value={"M"}
-                        checked={sexo === 'M'}
-                        onChange={(e) => setSexo(e.target.value)}
-                    />
-                    <label className="form-check-label" htmlFor="inputSexo">
-                        Macho
-                    </label>
-                </div>
-                <div className="form-check">
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name="sexo"
-                        id="inputSexo2"
-                        value={'F'}
-                        checked={sexo === 'F'}
-                        onChange={(e) => setSexo(e.target.value)}
-                    />
-                    <label className="form-check-label" htmlFor="inputSexo2">
-                        Fêmea
-                    </label>
-                </div>
-              </FormGroup>
-              <FormGroup label='Castrado:' htmlFor='inputCastrado'>
-                <div className="form-check">
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name="castrado"
-                        id="inputCastrado"
-                        value={true}
-                        checked={castrado === true || castrado === 'true'}
-                        onChange={(e) => setCastrado(e.target.value)}
-                    />
-                    <label className="form-check-label" htmlFor="inputCastrado">
-                        Castrado
-                    </label>
-                </div>
-                <div className="form-check">
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name="castrado"
-                        id="inputCastradoNao"
-                        value={false}
-                        checked={castrado === false || castrado === 'false'}
-                        onChange={(e) => setCastrado(e.target.value)}
-                    />
-                    <label className="form-check-label" htmlFor="inputCastradoNao">
-                        Não castrado
-                    </label>
-                </div>
-              </FormGroup>
-
-              <FormGroup label='Foto:' htmlFor='inputFoto'>
-                <input
-                  type='text'
-                  id='inputFoto'
-                  value={foto}
-                  className='form-control'
-                  name='foto'
-                  onChange={(e) => setFoto(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup label='Tutor: *' htmlFor='selectTutor'>
-                <select
-                  className='form-select'
-                  id='selectTutor'
-                  name='idTutor'
-                  value={idTutor}
-                  onChange={(e) => setTutor(e.target.value)}
-                >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
-                  {dadosTutor.map((dado) => (
-                    <option key={dado.id} value={dado.id}>
-                      {dado.nome}
-                    </option>
-                  ))}
-                </select>
-              </FormGroup>
-              
-               <FormGroup label='Raça: *' htmlFor='selectRaça'>
-                <select
-                  className='form-select'
-                  id='selectRaça'
-                  name='idRaça'
-                  value={idRaça}
-                  onChange={(e) => setRaça(e.target.value)}
-                >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
-                  {dadosRaca.map((dado) => (
-                    <option key={dado.id} value={dado.id}>
-                      {dado.nome}
-                    </option>
-                  ))}
-                </select>
-              </FormGroup>
-
-              <Stack spacing={1} padding={1} direction='row'>
-                <button
-                  onClick={salvar}
-                  type='button'
-                  className='btn btn-success'
-                >
-                  Salvar
-                </button>
-                <button
-                  onClick={inicializar}
-                  type='button'
-                  className='btn btn-danger'
-                >
-                  Cancelar
-                </button>
-              </Stack>
+              {/* */}
+              <button onClick={salvar} type='button' className='btn btn-success'>Salvar</button>
+              <button onClick={inicializar} type='button' className='btn btn-danger'>Cancelar</button>
             </div>
           </div>
         </div>

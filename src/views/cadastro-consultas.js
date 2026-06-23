@@ -10,16 +10,15 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 
 import '../custom.css';
 
-import axios from 'axios';
-import { BASE_URL } from '../config/axios';
-import { BASE_URL2 } from '../config/axios';
+
+import httpClient from '../config/axios';
 
 function CadastroConsultas() {
   const { idParam } = useParams();
-
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL2}/consultas`;
+
+  const baseURL = `/consultas`;
 
   const [id, setId] = useState('');
   const [dia, setDia] = useState('');
@@ -30,10 +29,9 @@ function CadastroConsultas() {
   const [idAnimal, setIdAnimal] = useState('');
   const [nomeAnimal, setNomeAnimal] = useState('');
 
-  const [dados, setDados] = React.useState([]);
-
-  function inicializar() {
-    if (idParam == null) {
+  
+  function inicializar(dadosCarregados = null) {
+    if (dadosCarregados == null) {
       setId('');
       setDia('');
       setOrientacoes('');
@@ -42,91 +40,71 @@ function CadastroConsultas() {
       setNomeVet('');
       setIdAnimal('');
       setNomeAnimal('');
-
     } else {
-      setId(dados.id);
-      setDia(dados.data);
-      setOrientacoes(dados.orientacoes);
-      setStatus(dados.status);
-      setIdVet(dados.idVet);
-      setNomeVet(dados.nomeVet);
-      setIdAnimal(dados.idAnimal);
-      setNomeAnimal(dados.nomeAnimal);
+      setId(dadosCarregados.id);
+      setDia(dadosCarregados.dia); 
+      setOrientacoes(dadosCarregados.orientacoes);
+      setStatus(dadosCarregados.status);
+      setIdVet(dadosCarregados.idVet);
+      setNomeVet(dadosCarregados.nomeVet);
+      setIdAnimal(dadosCarregados.idAnimal);
+      setNomeAnimal(dadosCarregados.nomeAnimal);
     }
   }
 
   async function salvar() {
-    let data = { id, dia, orientacoes, status, idVet, nomeVet, idAnimal, nomeAnimal};
-    data = JSON.stringify(data);
+    const data = { id, dia, orientacoes, status, idVet, nomeVet, idAnimal, nomeAnimal };
+    
     if (idParam == null) {
-      await axios
-        .post(baseURL, data, {
-          headers: { 'Content-Type': 'application/json' },
-        })
+      await httpClient.post(baseURL, data)
         .then(function (response) {
           mensagemSucesso(`Consulta cadastrada com sucesso!`);
           navigate(-1);
         })
         .catch(function (error) {
-          mensagemErro(error.response.data);
+          mensagemErro(error.response?.data || "Erro ao cadastrar");
         });
     } else {
-      await axios
-        .put(`${baseURL}/${idParam}`, data, {
-          headers: { 'Content-Type': 'application/json' },
-        })
+      await httpClient.put(`${baseURL}/${idParam}`, data)
         .then(function (response) {
           mensagemSucesso(`Consulta alterada com sucesso!`);
           navigate(-1);
         })
         .catch(function (error) {
-          mensagemErro(error.response.data);
+          mensagemErro(error.response?.data || "Erro ao alterar");
         });
     }
   }
 
   async function buscar() {
-    if(idParam != null){
-      await axios.get(`${baseURL}/${idParam}`).then((response) => {
-        setDados(response.data);
+    if (idParam != null) {
+      await httpClient.get(`${baseURL}/${idParam}`).then((response) => {
+        
+        inicializar(response.data);
       });
-      setId(dados.id);
-      setDia(dados.dia);
-      setOrientacoes(dados.orientacoes);
-      setStatus(dados.status);
-      setIdVet(dados.idVet);
-      setNomeVet(dados.nomeVet);
-      setIdAnimal(dados.idAnimal);
-      setNomeAnimal(dados.nomeAnimal);
     }
   }
 
   const [dadosVet, setDadosVet] = React.useState(null);
+  const [dadosAnimais, setDadosAnimais] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/veterinarios`).then((response) => {
+    
+    httpClient.get(`/veterinarios`).then((response) => {
       setDadosVet(response.data);
     });
-  }, []);
-
-
-    const [dadosAnimais, setDadosAnimais] = React.useState(null);
-
-    useEffect(() => {
-    axios.get(`${BASE_URL}/animais`).then((response) => {
+    httpClient.get(`/animais`).then((response) => {
       setDadosAnimais(response.data);
     });
+    
+    if (idParam != null) {
+        buscar();
+    }
   }, []);
 
-  useEffect(() => {
-    buscar(); // eslint-disable-next-line
-  }, [id]);
+  if (!dadosVet || !dadosAnimais) return null;
 
-  if (!dados) return null;
-  if (!dadosVet) return null;
-  if (!dadosAnimais) return null;
-
-return (
+  return (
     <div className='container'>
       <Card title='Agendamento de Consulta'>
         <div className='row'>
@@ -138,31 +116,26 @@ return (
                   id='inputDia'
                   value={dia}
                   className='form-control'
-                  name='dia'
                   onChange={(e) => setDia(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='Orientacoes: *' htmlFor=''>
+              <FormGroup label='Orientacoes: *' htmlFor='inputOrientacoes'>
                 <input
                   type='text'
                   maxLength='50'
-                  id=''
+                  id='inputOrientacoes'
                   value={orientacoes}
                   className='form-control'
-                  name=''
                   onChange={(e) => setOrientacoes(e.target.value)}
                 />
               </FormGroup>
-
-
-                <FormGroup label='Status: *' htmlFor=''>
+              <FormGroup label='Status: *' htmlFor='inputStatus'>
                 <input
                   type='text'
                   maxLength='11'
-                  id=''
+                  id='inputStatus'
                   value={status}
                   className='form-control'
-                  name=''
                   onChange={(e) => setStatus(e.target.value)}
                 />
               </FormGroup>
@@ -171,57 +144,33 @@ return (
                 <select
                   className='form-select'
                   id='selectVeterinario'
-                  name='idVet'
                   value={idVet}
                   onChange={(e) => setIdVet(e.target.value)}
                 >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
+                  <option value='0'> </option>
                   {dadosVet.map((dado) => (
-                      <option key={dado.id} value={dado.id}>
-                      {dado.nome}
-                    </option>
+                      <option key={dado.id} value={dado.id}>{dado.nome}</option>
                   ))}
                 </select>
               </FormGroup>
-
-
 
                <FormGroup label='Animal: *' htmlFor='selectAnimal'>
                 <select
                   className='form-select'
                   id='selectAnimal'
-                  name='idAnimal'
                   value={idAnimal}
                   onChange={(e) => setIdAnimal(e.target.value)}
                 >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
+                  <option value='0'> </option>
                   {dadosAnimais.map((dado) => (
-                      <option key={dado.id} value={dado.id}>
-                      {dado.nome}
-                    </option>
+                      <option key={dado.id} value={dado.id}>{dado.nome}</option>
                   ))}
                 </select>
               </FormGroup>
 
               <Stack spacing={1} padding={1} direction='row'>
-                <button
-                  onClick={salvar}
-                  type='button'
-                  className='btn btn-success'
-                >
-                  Salvar
-                </button>
-                <button
-                  onClick={inicializar}
-                  type='button'
-                  className='btn btn-danger'
-                >
-                  Cancelar
-                </button>
+                <button onClick={salvar} type='button' className='btn btn-success'>Salvar</button>
+                <button onClick={() => inicializar()} type='button' className='btn btn-danger'>Cancelar</button>
               </Stack>
             </div>
           </div>
