@@ -14,10 +14,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import axios from 'axios';
-import { BASE_URL } from '../config/axios';
+import httpClient from '../config/axios';
 
-const baseURL = `${BASE_URL}/tutores`;
+const baseURL = '/api/v1/tutores';
 
 function ListagemTutores() {
   const navigate = useNavigate();
@@ -39,9 +38,12 @@ function ListagemTutores() {
   async function excluir(id) {
     let data = JSON.stringify({ id });
     let url = `${baseURL}/${id}`;
-    await axios
-      .delete(url, data, {
+    
+    
+    await httpClient
+      .delete(url, {
         headers: { 'Content-Type': 'application/json' },
+        data: data
       })
       .then(function (response) {
         mensagemSucesso(`Tutor excluído com sucesso!`);
@@ -57,8 +59,11 @@ function ListagemTutores() {
   }
 
   React.useEffect(() => {
-    axios.get(baseURL).then((response) => {
+    
+    httpClient.get(baseURL).then((response) => {
       setDados(response.data);
+    }).catch(error => {
+      mensagemErro("Erro ao carregar a lista de tutores.");
     });
   }, []);
 
@@ -87,6 +92,7 @@ function ListagemTutores() {
                     <th scope='col'>CEP</th>
                     <th scope='col'>Número</th>
                     <th scope='col'>Complemento</th>
+                    <th scope='col'>Ações</th> {/* */}
                   </tr>
                 </thead>
                 <tbody>

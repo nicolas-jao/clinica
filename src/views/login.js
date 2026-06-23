@@ -1,11 +1,12 @@
 import React from 'react';
+import axios from 'axios'; 
 
 import Stack from '@mui/material/Stack';
 
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
 
-import { mensagemSucesso } from '../components/toastr';
+import { mensagemSucesso, mensagemErro } from '../components/toastr';
 
 import '../custom.css';
 
@@ -16,7 +17,25 @@ class Login extends React.Component {
   };
 
   logar = () => {
-    mensagemSucesso(`Usuário ${this.state.login} logado com sucesso!`);
+    const credenciais = {
+      login: this.state.login,
+      senha: this.state.senha
+    };
+
+    axios.post('http://localhost:8080/api/v1/usuarios/auth', credenciais)
+      .then(response => {
+        const token = response.data.token;
+        const isAdmin = response.data.admin; 
+
+        localStorage.setItem('token_usuario', token);
+        localStorage.setItem('is_admin', isAdmin);
+
+        mensagemSucesso(`Usuário ${this.state.login} logado com sucesso!`);
+        
+      })
+      .catch(erro => {
+        mensagemErro('Erro: Usuário não encontrado ou senha incorreta!');
+      });
   };
 
   cancelar = () => {
